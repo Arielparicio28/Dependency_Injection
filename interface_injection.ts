@@ -1,8 +1,6 @@
-  interface Producto {
-    nombre: string;
-    precio: number;
-    cantidad: number;
-  } 
+interface CalculadoraTotal {
+    calcular(productos: Producto[]): number;
+  }
   
   class Factura {
     private productos: Producto[];
@@ -18,7 +16,7 @@
     }
   }
   
-   class CalculadoraTotal {
+  class CalculadoraTotalImpl implements CalculadoraTotal {
     calcular(productos: Producto[]): number {
       let total = 0;
       for (const producto of productos) {
@@ -35,9 +33,9 @@
     { nombre: "Pantalón", precio: 50, cantidad: 1 },
   ];
   
-  const calculadoraTotal = new CalculadoraTotal();
+  const calculadoraTotal = new CalculadoraTotalImpl();
   const factura = new Factura(productos, calculadoraTotal);
   const total = factura.calcularTotal();
   
-  console.log(`Total de la factura ${total}$`);
-    
+  console.log("Total de la factura:", total);
+  

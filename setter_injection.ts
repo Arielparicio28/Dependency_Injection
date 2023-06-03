@@ -1,24 +1,31 @@
-  interface Producto {
+interface Producto {
     nombre: string;
     precio: number;
     cantidad: number;
-  } 
+  }
   
   class Factura {
     private productos: Producto[];
     private calculadoraTotal: CalculadoraTotal;
   
-    constructor(productos: Producto[], calculadoraTotal: CalculadoraTotal) {
+    constructor(productos: Producto[]) {
       this.productos = productos;
+    }
+  
+    setCalculadoraTotal(calculadoraTotal: CalculadoraTotal) {
       this.calculadoraTotal = calculadoraTotal;
     }
   
     calcularTotal(): number {
+      if (!this.calculadoraTotal) {
+        throw new Error("La calculadora de total no ha sido asignada.");
+      }
+  
       return this.calculadoraTotal.calcular(this.productos);
     }
   }
   
-   class CalculadoraTotal {
+  class CalculadoraTotal {
     calcular(productos: Producto[]): number {
       let total = 0;
       for (const producto of productos) {
@@ -36,8 +43,9 @@
   ];
   
   const calculadoraTotal = new CalculadoraTotal();
-  const factura = new Factura(productos, calculadoraTotal);
+  const factura = new Factura(productos);
+  factura.setCalculadoraTotal(calculadoraTotal);
   const total = factura.calcularTotal();
   
-  console.log(`Total de la factura ${total}$`);
-    
+  console.log("Total de la factura:", total);
+  
